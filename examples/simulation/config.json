@@ -1,0 +1,19 @@
+import json
+
+config = {
+    "interval": 1,
+    "seed": 42,
+    "roadnetFile": "C:/Users/asdal/Downloads/CityFlow-master/tools/generator/roadnet_3_4.json",
+    "flowFile": "C:/Users/asdal/Downloads/CityFlow-master/tools/generator/flow_3_4.json",
+    "threadNum": 1
+}
+
+with open("C:/Users/asdal/Downloads/CityFlow-master/tools/generator/config.json", "w") as f:
+    json.dump(config, f, indent=4)
+print("Configuration file 'config.json' has been created.")
+
+
+
+# The file is saved at 'C:/Users/asdal/Downloads/CityFlow-master/tools/generator/config.json'
+# This script creates a JSON configuration file named 'config.json'
+# This script creates a JSON configuration file named 'config.json'

@@ -1,0 +1,19 @@
+{
+  "scenario": "congestion",
+  "simulation_duration": 200.0,
+  "final_statistics": {
+    "total_vehicles": 15,
+    "average_speed": 7.747786716558776,
+    "total_waiting_time": 887.0,
+    "congestion_level": 0.05357142857142857,
+    "roads_occupied": 14
+  },
+  "overall_statistics": {
+    "average_speed_over_time": 7.497921731164995,
+    "max_congestion_level": 0.05357142857142857,
+    "max_vehicles_simultaneously": 15,
+    "total_waiting_time_accumulated": 93349.5
+  },
+  "traffic_signals": 14,
+  "vehicles_completed": 0
+}
