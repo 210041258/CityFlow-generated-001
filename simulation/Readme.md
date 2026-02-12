@@ -20,6 +20,11 @@ You can embed the video directly in Markdown for GitHub or local preview:
 </video>
 ```
 
+<video width="100%" controls autoplay loop muted poster="frame_000.png">
+  <source src="https://raw.githubusercontent.com/210041258/CityFlow-generated-001/master/simulation/2026-02-12.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 This will display a video player directly in your README when viewed in compatible platforms.
 
 ---
