@@ -230,3 +230,6 @@ C:\Users\asdal\replay>python visu.py --roadnet "roadnet_3_4.json" --flow "flow_3
 🖼️  Generating static publication frame (t=0)...
 ✅ Static frame saved as frame_000.png and frame_000.pdf
 🎬 Starting animation (600 frames, 60.0s simulated)...
+
+
+exit (err..)
