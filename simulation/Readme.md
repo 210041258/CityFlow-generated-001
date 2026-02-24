@@ -2,19 +2,6 @@
 
 A professional, high‑performance visualization tool for traffic intersection simulations. Reads standard `roadnet.json` and `replay.txt` formats, generates publication‑ready static frames, and animates complete traffic flow with lane‑accurate traffic lights.
 
----
-
-## 🎬 Simulation Frontend Video
-
-Click below to watch the simulation frontend video in a new browser tab:
-
-<div align="center"> <a href="https://youtu.be/hb3mCM8DzbM" target="_blank"> <img src="frame_000.png" alt="Traffic Intersection Simulation" width="800" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"> <br> <img src="https://img.shields.io/badge/Watch%20on-YouTube-red?style=for-the-badge&logo=youtube" alt="Watch on YouTube"> </a> <p><em>▶️ Click the image above to watch the full simulation video on YouTube</em></p> </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-**📥 Download Options:**
-
-* [Download MP4](https://raw.githubusercontent.com/210041258/CityFlow-generated-001/refs/heads/master/simulation/frontend_replay/2026-02-12.mp4)
-
-* [Download WebM]([https://raw.githubusercontent.com/210041258/CityFlow-generated-001/master/simulation/2026-02-12.webm](https://raw.githubusercontent.com/210041258/CityFlow-generated-001/refs/heads/master/simulation/frontend_replay/2026-02-12.mp4))
 
 ---
 
