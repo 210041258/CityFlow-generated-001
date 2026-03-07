@@ -1,0 +1,10 @@
+<configuration>
+    <input>
+        <net-file value="C:\Users\asdal\replay_9_9\project\network.net.xml"/>
+        <route-files value="C:\Users\asdal\replay_9_9\project\fcd.rou.xml"/>
+    </input>
+    <time>
+        <begin value="0"/>
+        <end value="1000"/>
+    </time>
+</configuration>
