@@ -1,0 +1,5 @@
+Model: Exponential
+Equation: y = 198.9074 * e^(0.0006 * x)
+R²: 0.4736
+AIC: 7605.22
+BIC: 7614.99
