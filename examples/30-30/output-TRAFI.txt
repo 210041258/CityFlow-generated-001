@@ -1,0 +1,66 @@
+& C:/Users/asdal/AppData/Local/Microsoft/WindowsApps/python3.13.exe C:\Users\asdal\Downloads\CityFlow-generated-001\examples\30-30\trafi.py --flow flow_30_30_turn.json --steps 500 --dt 0.5 --model IDM                               
+======================================================================
+🚗 TRAFI - Traffic Flow Simulator
+======================================================================
+❌ Error: File flow_30_30_turn.json not found.
+   Using sample data instead.
+📝 Generating sample traffic flow data...
+✅ Generated 30 sample vehicles
+
+🚗 TRAFI Simulator Initialized
+   • Vehicles: 30
+   • Time step: 0.5s, Total steps: 500
+   • Road length: 100.0m
+   • Car-following model: IDM
+   • Traffic signals: Enabled
+
+======================================================================
+🚦 TRAFI SIMULATION STARTING
+======================================================================
+
+Step 0: Running vehicles: 30, Avg speed: 1.53 m/s
+Step 50: Running vehicles: 29, Avg speed: 2.19 m/s
+Step 100: Running vehicles: 29, Avg speed: 1.51 m/s
+Step 150: Running vehicles: 29, Avg speed: 0.56 m/s
+Step 200: Running vehicles: 29, Avg speed: 0.00 m/s
+Step 250: Running vehicles: 29, Avg speed: 0.00 m/s
+Step 300: Running vehicles: 29, Avg speed: 0.00 m/s
+Step 350: Running vehicles: 29, Avg speed: 0.00 m/s
+Step 400: Running vehicles: 29, Avg speed: 0.00 m/s
+Step 450: Running vehicles: 29, Avg speed: 0.00 m/s
+
+======================================================================
+✅ SIMULATION COMPLETED SUCCESSFULLY
+======================================================================
+
+======================================================================
+TRAFI - TRAFFIC FLOW SIMULATION RESULTS
+======================================================================
+
+📊 PERFORMANCE METRICS
+----------------------------------------
+  • Average travel time: -59.56 s
+  • Average speed: 0.00 m/s (0.0 km/h)
+  • Average delay: 0.00 s
+  • Average waiting time: 4.00 s
+
+📈 THROUGHPUT & EFFICIENCY
+----------------------------------------
+  • Total trips completed: 1
+  • Average trip distance: -0.00 km
+  • System efficiency: 100.0%
+
+🌱 ENVIRONMENTAL IMPACT
+----------------------------------------
+  • Total fuel consumption: 0.77 liters
+  • Total CO2 emissions: 5.34 kg
+  • Average fuel per trip: 0.765 liters
+  • Average CO2 per trip: 5.338 kg
+
+⏱️  SIMULATION STATISTICS
+----------------------------------------
+  • Simulation runtime: 0.11 seconds
+  • Data points collected: 0
+======================================================================
+
+🎉 TRAFI simulation completed successfully!

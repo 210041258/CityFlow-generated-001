@@ -1,0 +1,43 @@
+& C:/Users/asdal/AppData/Local/Microsoft/WindowsApps/python3.13.exe C:\Users\asdal\Downloads\CityFlow-generated-001\examples\24-24\TRAFI.py --flow flow_24_24_turn.json --steps 500 --dt 0.5 --model IDM  
+rated-001\examples\24-24\TRAFI.py --flow flow_24_24_turn.json --steps 500 --dt 0.5 --model IDM                               
+======================================================================
+🚗 TRAFI - Traffic Flow Simulator
+======================================================================
+❌ Error: File flow_24_24_turn.json not found.
+   Using sample data instead.
+📝 Generating sample traffic flow data...
+✅ Generated 30 sample vehicles
+
+🚗 TRAFI Simulator Initialized
+   • Vehicles: 30
+   • Time step: 0.5s, Total steps: 500
+   • Road length: 100.0m
+   • Car-following model: IDM
+   • Traffic signals: Enabled
+
+======================================================================
+🚦 TRAFI SIMULATION STARTING
+======================================================================
+
+Step 0: Running vehicles: 30, Avg speed: 1.60 m/s
+Step 50: Running vehicles: 30, Avg speed: 2.02 m/s
+Step 100: Running vehicles: 30, Avg speed: 1.35 m/s
+Step 150: Running vehicles: 30, Avg speed: 1.02 m/s
+Step 200: Running vehicles: 30, Avg speed: 0.00 m/s
+Step 250: Running vehicles: 30, Avg speed: 0.00 m/s
+Step 300: Running vehicles: 30, Avg speed: 0.00 m/s
+Step 350: Running vehicles: 30, Avg speed: 0.00 m/s
+Step 400: Running vehicles: 30, Avg speed: 0.00 m/s
+Step 450: Running vehicles: 30, Avg speed: 0.00 m/s
+
+======================================================================
+✅ SIMULATION COMPLETED SUCCESSFULLY
+======================================================================
+
+======================================================================
+TRAFI - TRAFFIC FLOW SIMULATION RESULTS
+======================================================================
+⚠️  No trips completed during simulation
+======================================================================
+
+🎉 TRAFI simulation completed successfully!
