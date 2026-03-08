@@ -1,0 +1,19 @@
+Traffic Dynamics Analysis Results
+============================================================
+Total Frames: 980
+Window Size: 10
+IQR Factor: 1.5
+
+Growth Statistics:
+  - Mean Growth Rate: 0.30
+  - Max Growth Rate: 12.00
+  - Min Growth Rate: -6.00
+  - Significant Growth Frames: [0, 5, 10, 15, 20, 25, 30, 35, 60, 90, 95, 100, 105, 110, 115, 120, 125, 165, 170, 230, 235]
+
+Congestion Detection:
+  - Peak Frames (Congestion): []
+  - Number of Peaks: 0
+
+Trend Prediction:
+  - Average Predicted Value: 268.73
+  - First 5 Predictions: [27.999999999999993, 33.599999999999994, 37.6, 40.0, 40.8]

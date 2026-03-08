@@ -1,0 +1,7 @@
+DING\MAIN.PY:191: RuntimeWarning: overflow encountered in exp
+  func = lambda x, L, k, x0: L / (1 + np.exp(-k * (x - x0)))
+Model: Logistic
+Equation: y = 302.2328 / (1 + e^(-0.0143 * (x - 101.5374)))
+R²: 0.9861
+AIC: 4043.81
+BIC: 4058.47

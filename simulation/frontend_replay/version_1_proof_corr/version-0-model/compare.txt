@@ -1,0 +1,15 @@
+ Model Comparison for 'replay.txt'
+================================================================================
+c:\Users\asdal\Downloads\CityFlow-generated-001-master\simulation\frontend_replay\TEST-MAINDING\MAIN.PY:191: RuntimeWarning: overflow encountered in exp
+  func = lambda x, L, k, x0: L / (1 + np.exp(-k * (x - x0)))
+Model           | R²       | AIC        | BIC       
+------------------------------------------------------------
+Logistic        | 0.9861   | 4043.81     | 4058.47
+Polynomial (deg 2) | 0.8892   | 6080.37     | 6095.03
+Polynomial (deg 1) | 0.5376   | 7478.30     | 7488.08
+Exponential     | 0.4736   | 7605.22     | 7614.99
+
+Best Fit (Lowest AIC):
+Type: Logistic
+Equation: y = 302.2328 / (1 + e^(-0.0143 * (x - 101.5374)))
+R²: 0.9861
