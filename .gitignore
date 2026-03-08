@@ -11,3 +11,4 @@ CMakeSettings.json
 cmake-build-*
 
 frontend/replay/*
+simulation/tools_generator_grid_replay/grid_data/grid_30_30/project/roadnet_30_30_turn.json
