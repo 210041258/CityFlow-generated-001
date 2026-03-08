@@ -1,0 +1,10 @@
+<configuration>
+    <input>
+        <net-file value="C:\Users\asdal\Downloads\CityFlow-generated-001\simulation\tools_generator_grid_replay\grid_data\grid_13_13\project\network.net.xml"/>
+        <route-files value="C:\Users\asdal\Downloads\CityFlow-generated-001\simulation\tools_generator_grid_replay\grid_data\grid_13_13\project\fcd.rou.xml"/>
+    </input>
+    <time>
+        <begin value="0"/>
+        <end value="0"/>
+    </time>
+</configuration>

@@ -1,0 +1,4 @@
+PS C:\Users\asdal> & C:/Users/asdal/AppData/Local/Microsoft/WindowsApps/python3.13.exe c:/Users/asdal/Downloads/CityFlow-generated-001-master/tools/generator/generate_grid_logistic_full_trafficaware.py 50 --turn --tlPlan --dir .
+Logistic Traffic Model -> rowNum=9, colNum=9, interval=5.11, Lanes(L/S/R)=1/1/1, laneMaxSpeed=20.11
+Generated: .\roadnet_9_9_turn.json & .\flow_9_9_turn.json
+PS C:\Users\asdal> 
