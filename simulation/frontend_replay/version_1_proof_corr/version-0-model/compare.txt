@@ -1,4 +1,4 @@
- Model Comparison for 'replay.txt'
+Model Comparison for 'replay.txt'
 ================================================================================
 c:\Users\asdal\Downloads\CityFlow-generated-001-master\simulation\frontend_replay\TEST-MAINDING\MAIN.PY:191: RuntimeWarning: overflow encountered in exp
   func = lambda x, L, k, x0: L / (1 + np.exp(-k * (x - x0)))

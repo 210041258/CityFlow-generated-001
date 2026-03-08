@@ -1,0 +1,10 @@
+<edges>
+<edge id="road_0_1_0" from="intersection_0_1" to="intersection_1_1" numLanes="3" speed="13.9"/>
+<edge id="road_1_0_1" from="intersection_1_0" to="intersection_1_1" numLanes="3" speed="13.9"/>
+<edge id="road_1_1_0" from="intersection_1_1" to="intersection_2_1" numLanes="3" speed="13.9"/>
+<edge id="road_1_1_1" from="intersection_1_1" to="intersection_1_2" numLanes="3" speed="13.9"/>
+<edge id="road_1_1_2" from="intersection_1_1" to="intersection_0_1" numLanes="3" speed="13.9"/>
+<edge id="road_1_1_3" from="intersection_1_1" to="intersection_1_0" numLanes="3" speed="13.9"/>
+<edge id="road_1_2_3" from="intersection_1_2" to="intersection_1_1" numLanes="3" speed="13.9"/>
+<edge id="road_2_1_2" from="intersection_2_1" to="intersection_1_1" numLanes="3" speed="13.9"/>
+</edges>
