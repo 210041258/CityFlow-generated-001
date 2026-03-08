@@ -1,0 +1,7 @@
+<nodes>
+<node id="intersection_0_1" x="-300.0" y="0.0" type="priority"/>
+<node id="intersection_1_0" x="0.0" y="-300.0" type="priority"/>
+<node id="intersection_1_1" x="0.0" y="0.0" type="priority"/>
+<node id="intersection_1_2" x="0.0" y="300.0" type="priority"/>
+<node id="intersection_2_1" x="300.0" y="0.0" type="priority"/>
+</nodes>
