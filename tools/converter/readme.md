@@ -1,26 +1,41 @@
-# Converter
+# Generator
 
-`converter.py` can convert sumo roadnet files to its corresponding CityFlow version. 
+`generate_grid_scenario.py` can generate NxM grid road network with traffic flows. 
 
-The following code converts a sumo roadnet file, atlanta.net.xml, to CityFlow format.
+### Quick Start
 
-*Example roadnet and flow files can be downloaded [here](https://github.com/cityflow-project/data/tree/master/tools/Converter/examples)*
+To generate a 3x4 grid road network
 
 ```
-python converter.py --sumonet atlanta_sumo.net.xml --cityflownet atlanta_cityflow.json
+python generate_grid_scenario.py 3 4 
 ```
 
-SUMO roadnet and transformed CityFlow roadnet
+To generate a 3x4 grid road network with 2 straight lanes and with a predefined working traffic light plan
 
-<p float="left">
-    <img src="https://github.com/cityflow-project/data/raw/master/tools/Converter/figures/sumo.png" alt="SUMO" height="300px"/>
-    <img src="https://github.com/cityflow-project/data/raw/master/tools/Converter/figures/city_flow.png" alt="CityFlow" height="300px" style="margin-left:50px"/>
-</p>
+```
+python generate_grid_scenario.py 3 4 --numStraightLanes 2 --tlPlan
+```
 
-
-
-#### Dependencies
-
-**sumo** is required and make sure that the environment variable *SUMO_HOME* is set properly. If you have an installation via *apt-get*, you can use `/usr/share/sumo` as the value.
-
-**sympy** is required.  You can install it using pip.
+### Other arguments
+- `--rowDistance`: int, default=300, distance between consecutive intersections of each row (East-West Roads
+- `--columnDistance`: int, default=300, distance between consecutive intersections of each column (South-North Roads
+- `--intersectionWidth`: int, default=30
+- `--numLeftLanes`: int, default=1
+- `--numStraightLanes`: int, default=1
+- `--numRightLanes`: int, default=1
+- `--laneMaxSpeed`: int, default=16.67, meters/second
+- `--vehLen`: float, default=5.0, meters
+- `--vehWidth`: float, default=2.0, meters
+- `--vehMaxPosAcc`: float, default=2.0
+- `--vehMaxNegAcc`: float, default=4.5
+- `--vehUsualPosAcc`: float, default=2.0
+- `--vehUsualNegAcc`: float, default=4.5
+- `--vehMinGap`: float, default=2.5
+- `--vehMaxSpeed`: float, default=16.67
+- `--vehHeadwayTime`: float, default=1.5
+- `--dir`: str, default="./"
+- `--roadnetFile`: str, generated road network file
+- `--turn`: if specified, generate turning flows instead of straight flows
+- `--tlPlan`: if specified, generate working predefined traffic signal plan instead of plans with default orders
+- `--interval`: float, default=2.0, time (seconds) between each vehicle for each flow
+- `--flowFile`: str, generated flow file
