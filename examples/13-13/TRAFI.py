@@ -577,24 +577,22 @@ class TRAFI_Simulator:
             self.road_network.add_vehicle(vehicle["current_road"], vehicle) 
 
     def find_leading_vehicle(self, vehicle):
-        """Find the vehicle directly ahead on the same road"""
         road_vehicles = self.road_network.get_vehicles_on_road(vehicle["current_road"])
-        
+
         if len(road_vehicles) < 2:
             return None, float('inf')
-        
-        # Find vehicle with smallest positive position difference
+
         min_gap = float('inf')
         leader = None
-        
+
         for v in road_vehicles:
             if v["id"] != vehicle["id"] and v["position"] > vehicle["position"]:
                 gap = v["position"] - vehicle["position"] - v["length"]
                 if gap < min_gap:
                     min_gap = gap
                     leader = v
-        
-        return leader, min_gap if min_gap != float('inf') else None
+
+        return leader, min_gap  # always a number (inf if no leader)
     
     def calculate_acceleration(self, vehicle, leader, gap):
         """Calculate acceleration based on selected car-following model"""
@@ -1152,3 +1150,6 @@ Examples:
 # -------------------------
 if __name__ == "__main__":
     main()
+
+
+    
