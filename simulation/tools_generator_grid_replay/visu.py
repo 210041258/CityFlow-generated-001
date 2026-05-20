@@ -831,9 +831,9 @@ def animate_simulation(simulator, road_network, interval=50, save_mp4=False, tot
 # ----------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(description="Visualise traffic from roadnet and flow JSON (3_4 format).")
-    parser.add_argument('--roadnet', type=str, default='roadnet_3_4.json',
+    parser.add_argument('--roadnet', type=str, default="C:\\Users\\asdal\\Downloads\\CityFlow-generated-001\\simulation\\tools_generator_grid_replay\\roadnet_3_4.json",
                         help='Path to roadnet_3_4.json')
-    parser.add_argument('--flow', type=str, default='flow_3_4.json',
+    parser.add_argument('--flow', type=str, default="C:\\Users\\asdal\\Downloads\\CityFlow-generated-001\\simulation\\tools_generator_grid_replay\\flow_3_4.json",
                         help='Path to flow_3_4.json')
     parser.add_argument('--output', type=str, default='frame',
                         help='Prefix for static output files')
