@@ -79,7 +79,12 @@ Useful options inside `currnet.PY`:
 ## Mathematical Methodology & Model Selection
 
 ### Goal
-The pipeline attempts to determine the most plausible functional form governing the evolution of vehicle counts over frames. It compares multiple regression models and selects the best one using **information criteria** that balance goodness-of-fit against model complexity.
+Select a functional form that explains how the vehicle count evolves over frames, while avoiding overfitting.
+
+This report compares candidate models using **information criteria** (AIC/BIC), which trade off:
+- **fit quality** (how close the model is to the data)
+- **model complexity** (how many parameters the model uses)
+
 
 ### Models considered
 1. **Linear** (constant growth)
@@ -111,7 +116,10 @@ Where:
 
 Interpretation:
 - Lower AIC/BIC is better.
+- **AIC meaning**: an (approximate) estimator of out-of-sample prediction error; it balances fit quality vs. parameter count (overfitting control).
+- **BIC meaning**: a Bayesian-flavored score with a stronger complexity penalty; with large \(n\) (here \(n=980\)), BIC increasingly prefers simpler models unless the fit improvement is substantial.
 - Large differences \(\Delta\mathrm{AIC}\) (or \(\Delta\mathrm{BIC}\)) indicate that the runner-up model is strongly disfavored.
+
 
 Using this dataset:
 - Best model (lowest AIC): **Logistic** with **AIC = 4043.81**
