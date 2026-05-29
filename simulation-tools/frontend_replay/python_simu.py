@@ -546,9 +546,9 @@ def animate_frames(frames_data, road_network, interval=50, save_mp4=False):
 # ----------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(description="Visualise traffic intersection from JSON roadnet and replay.")
-    parser.add_argument('--roadnet', type=str, default="C:\\Users\\asdal\\replay\\roadnet.json",
+    parser.add_argument('--roadnet', type=str, default="C:\\Users\\asdal\\Downloads\\CityFlow-generated-001\\simulation-tools\\frontend_replay\\roadnet.json",
                         help='Path to roadnet.json')
-    parser.add_argument('--replay', type=str, default="C:\\Users\\asdal\\replay\\replay.txt",
+    parser.add_argument('--replay', type=str, default="C:\\Users\\asdal\\Downloads\\CityFlow-generated-001\\simulation-tools\\frontend_replay\\replay.txt",
                         help='Path to replay.txt')
     parser.add_argument('--output', type=str, default='frame',
                         help='Prefix for static output files')

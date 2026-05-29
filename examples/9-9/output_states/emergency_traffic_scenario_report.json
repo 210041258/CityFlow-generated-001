@@ -2,18 +2,18 @@
   "scenario": "emergency",
   "simulation_duration": 1200.0,
   "final_statistics": {
-    "total_vehicles": 2,
-    "average_speed": 24.999999999999996,
-    "total_waiting_time": 0.0,
-    "congestion_level": 0.05,
-    "roads_occupied": 2
+    "total_vehicles": 46,
+    "average_speed": 9.24345444743492,
+    "total_waiting_time": 2318.0,
+    "congestion_level": 0.062162162162162166,
+    "roads_occupied": 37
   },
   "overall_statistics": {
-    "average_speed_over_time": 24.983543540601342,
-    "max_congestion_level": 0.05,
-    "max_vehicles_simultaneously": 2,
-    "total_waiting_time_accumulated": 0.0
+    "average_speed_over_time": 8.906899677421052,
+    "max_congestion_level": 0.062162162162162166,
+    "max_vehicles_simultaneously": 46,
+    "total_waiting_time_accumulated": 1605099.0
   },
-  "traffic_signals": 0,
+  "traffic_signals": 36,
   "vehicles_completed": 0
 }
