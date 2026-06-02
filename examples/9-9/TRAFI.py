@@ -298,51 +298,97 @@ class TRAFI_Stats:
             density = total_vehicles / (len(road_network.roads) * 0.1) if road_network.roads else 0
             self.time_series_data["density"].append(density)
     
-    def print_summary(self):
-        """Print comprehensive simulation statistics"""
-        print("\n" + "=" * 70)
-        print("TRAFI - TRAFFIC FLOW SIMULATION RESULTS")
-        print("=" * 70)
+    def print_summary(self, params=None):
+        """Print comprehensive simulation statistics with detailed metrics"""
+        print("\n" + "=" * 75)
+        print("TRAFI - TRAFFIC FLOW SIMULATION RESULTS".center(75))
+        print("=" * 75)
         
-        if self.travel_times:
-            print("\n📊 PERFORMANCE METRICS")
+        # -----------------------------
+        # Simulation Parameters
+        # -----------------------------
+        if params:
+            print("\n🛠️  SIMULATION CONFIGURATION")
             print("-" * 40)
-            print(f"  • Average travel time: {np.mean(self.travel_times):.2f} s")
-            print(f"  • Average speed: {np.mean(self.average_speeds):.2f} m/s ({np.mean(self.average_speeds)*3.6:.1f} km/h)")
-            print(f"  • Average delay: {np.mean(self.delays):.2f} s")
-            
-            if self.waiting_times:
-                print(f"  • Average waiting time: {np.mean(self.waiting_times):.2f} s")
-            
-            print(f"\n📈 THROUGHPUT & EFFICIENCY")
-            print("-" * 40)
-            print(f"  • Total trips completed: {len(self.travel_times)}")
-            avg_trip_distance = np.mean([s*3.6 for s in self.average_speeds]) * np.mean(self.travel_times) / 3600
-            print(f"  • Average trip distance: {avg_trip_distance:.2f} km")
-            
-            if self.travel_times:
-                efficiency = (1 - np.mean(self.delays) / np.mean(self.travel_times)) * 100
-                print(f"  • System efficiency: {efficiency:.1f}%")
-            
-            if self.fuel_consumption:
-                print(f"\n🌱 ENVIRONMENTAL IMPACT")
-                print("-" * 40)
-                total_fuel = sum(self.fuel_consumption)
-                total_co2 = sum(self.emissions) / 1000  # Convert to kg
-                print(f"  • Total fuel consumption: {total_fuel:.2f} liters")
-                print(f"  • Total CO2 emissions: {total_co2:.2f} kg")
-                print(f"  • Average fuel per trip: {total_fuel/len(self.travel_times):.3f} liters")
-                print(f"  • Average CO2 per trip: {total_co2/len(self.travel_times):.3f} kg")
-            
-            print(f"\n⏱️  SIMULATION STATISTICS")
-            print("-" * 40)
-            sim_duration = (datetime.now() - self.start_time).total_seconds()
-            print(f"  • Simulation runtime: {sim_duration:.2f} seconds")
-            print(f"  • Data points collected: {sum(len(lst) for lst in self.time_series_data.values())}")
-        else:
-            print("⚠️  No trips completed during simulation")
+            for key, value in params.items():
+                print(f"  • {str(key).title():<20}: {value}")
+
+        if not self.travel_times:
+            print("\n⚠️  No trips completed during simulation.")
+            print("=" * 75)
+            return
+
+        # -----------------------------
+        # Performance Metrics (with Std Dev)
+        # -----------------------------
+        print("\n📊 PERFORMANCE METRICS")
+        print("-" * 40)
         
-        print("=" * 70)
+        # Calculate total distance accurately: Sum(speed * time) for all vehicles
+        total_dist = sum([s * t for s, t in zip(self.average_speeds, self.travel_times)])
+        
+        print(f"  • Total Trips:          {len(self.travel_times):>10}")
+        print(f"  • Avg Travel Time:      {np.mean(self.travel_times):>10.2f} s")
+        print(f"  • Min / Max Travel:     {np.min(self.travel_times):>10.2f} / {np.max(self.travel_times):>6.2f} s")
+        print(f"  • Std Dev (Travel):     {np.std(self.travel_times):>10.2f} s")
+        
+        print(f"\n  • Avg Speed:            {np.mean(self.average_speeds):>10.2f} m/s")
+        print(f"  • Avg Speed (km/h):     {np.mean(self.average_speeds)*3.6:>10.2f} km/h")
+        print(f"  • Max Speed:            {np.max(self.average_speeds)*3.6:>10.2f} km/h")
+        print(f"  • Std Dev (Speed):      {np.std(self.average_speeds):>10.2f} m/s")
+
+        # -----------------------------
+        # Throughput & Efficiency
+        # -----------------------------
+        print("\n📈 THROUGHPUT & EFFICIENCY")
+        print("-" * 40)
+        print(f"  • Total Distance:       {total_dist/1000:>10.2f} km")
+        
+        avg_delay = np.mean(self.delays)
+        avg_travel = np.mean(self.travel_times)
+        efficiency = (1 - avg_delay / avg_travel) * 100 if avg_travel > 0 else 0
+        
+        print(f"  • System Efficiency:    {efficiency:>10.1f}%")
+        print(f"  • Avg Delay:            {avg_delay:>10.2f} s")
+        
+        if self.waiting_times:
+            avg_wait = np.mean(self.waiting_times)
+            total_wait_time = sum(self.waiting_times)
+            print(f"  • Avg Waiting Time:     {avg_wait:>10.2f} s")
+            print(f"  • Total Wait Time:      {total_wait_time/60:>10.2f} min")
+
+        # -----------------------------
+        # Environmental Impact (Standardized Units)
+        # -----------------------------
+        if self.fuel_consumption:
+            print("\n🌱 ENVIRONMENTAL IMPACT")
+            print("-" * 40)
+            total_fuel = sum(self.fuel_consumption)
+            total_co2 = sum(self.emissions) / 1000  # kg
+            
+            # Calculate per-100km metrics if total distance > 0
+            if total_dist > 0:
+                fuel_per_100km = (total_fuel / (total_dist / 1000)) * 100
+                co2_per_km = total_co2 / (total_dist / 1000)
+                
+                print(f"  • Total Fuel:           {total_fuel:>10.2f} liters")
+                print(f"  • Fuel Consumption:     {fuel_per_100km:>10.2f} L/100km")
+                
+                print(f"  • Total CO2:            {total_co2:>10.2f} kg")
+                print(f"  • CO2 Emission Rate:    {co2_per_km:>10.2f} g/km")
+            else:
+                print(f"  • Total Fuel:           {total_fuel:>10.2f} liters")
+                print(f"  • Total CO2:            {total_co2:>10.2f} kg")
+
+        # -----------------------------
+        # Simulation Stats
+        # -----------------------------
+        print(f"\n⏱️  SIMULATION STATISTICS")
+        print("-" * 40)
+        sim_duration = (datetime.now() - self.start_time).total_seconds()
+        print(f"  • Runtime:              {sim_duration:>10.2f} sec")
+        print(f"  • Time Steps:           {sum(len(lst) for lst in self.time_series_data.values())/6:>10.0f} (approx)")
+        print("=" * 75)
 
 # -------------------------
 # Main Simulation Class
@@ -430,7 +476,10 @@ class TRAFI_Simulator:
         # -----------------------------
         # SIGNAL AWARE DRIVING
         # -----------------------------
-        if signal_phase == "red" and vehicle["position"] > self.road_length - 30:
+        # Expand the red-light reaction zone to improve realism and avoid clearing too quickly
+        red_zone_start = self.road_length - 80  # meters (was 30m)
+        if signal_phase == "red" and vehicle["position"] > red_zone_start:
+
 
             vehicle["waiting_time"] += self.dt
             gap_to_stop = self.road_length - vehicle["position"]
@@ -575,7 +624,9 @@ class TRAFI_Simulator:
                 "deceleration": abs(vehicle_info["usualNegAcc"]),
                 "length": vehicle_info["length"],
                 "start_time": start_time,
-                "state": "running",  # START MOVING IMMEDIATELY
+                # Time-based spawning: start only when step>=start_time
+                "state": "waiting" if start_time > 0 else "running",  # START WHEN startTime REACHED
+
                 "trajectory": [],
                 "waiting_time": 0.0,
                 "total_distance": 0.0,
