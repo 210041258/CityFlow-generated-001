@@ -711,7 +711,7 @@ class StateGenerator:
 def main():
     """Main function to generate states for hard scenarios"""
     parser = argparse.ArgumentParser(description="Generate traffic simulation states for hard scenarios")
-    parser.add_argument("--flow-file", type=str, default="flow_3_4.json",
+    parser.add_argument("--flow-file", type=str, default="flow_13_13_turn.json",
                        help="Path to flow JSON file")
     parser.add_argument("--output-dir", type=str, default="output_states",
                        help="Output directory for state files")

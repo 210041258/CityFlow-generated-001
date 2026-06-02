@@ -1082,7 +1082,7 @@ Examples:
         """
     )
     
-    parser.add_argument("--flow", type=str, default=None,
+    parser.add_argument("--flow", type=str, default="flow_3_4.json",
                        help="Path to flow JSON file (optional, uses sample data if not provided)")
     parser.add_argument("--steps", type=int, default=300,
                        help="Number of simulation steps (default: 300)")

@@ -1075,14 +1075,14 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  python trafi.py --flow flow_3_4.json
-  python trafi.py --flow flow_3_4.json --steps 500 --dt 0.5 --model IDM
-  python trafi.py --flow flow_3_4.json --no-signals --export
+  python trafi.py --flow flow_24_24_turn.json
+  python trafi.py --flow flow_24_24_turn.json --steps 500 --dt 0.5 --model IDM
+  python trafi.py --flow flow_24_24_turn.json --no-signals --export
   python trafi.py --steps 200 --road-length 150 --model GIPPS --visualize
         """
     )
     
-    parser.add_argument("--flow", type=str, default=None,
+    parser.add_argument("--flow", type=str, default="flow_24_24_turn.json",
                        help="Path to flow JSON file (optional, uses sample data if not provided)")
     parser.add_argument("--steps", type=int, default=300,
                        help="Number of simulation steps (default: 300)")
