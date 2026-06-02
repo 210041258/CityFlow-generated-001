@@ -395,7 +395,7 @@ class TRAFI_Stats:
 # -------------------------
 class TRAFI_Simulator:
 
-    def __init__(self, flow_file=None, dt=1.0, total_steps=300, road_length=100, 
+    def __init__(self, flow_file="C:\\Users\\asdal\\Downloads\\CityFlow-generated-001\\examples\\9-9\\flow_9_9_turn.json", dt=1.0, total_steps=300, road_length=100, 
                  car_following_model="IDM", enable_signals=True):
         self.dt = dt
         self.total_steps = total_steps
@@ -418,7 +418,7 @@ class TRAFI_Simulator:
         
         # Load traffic flow
         if flow_file:
-            self.load_flow_data(flow_file)
+            self.load_flow_data()
         else:
             print("⚠️  No flow file provided, using sample data")
             self.create_sample_data()
@@ -552,20 +552,22 @@ class TRAFI_Simulator:
 
     # DELETED: Duplicate update_vehicle_state (Previously around Line 328)
 
-    def load_flow_data(self, flow_file):
-        """Load vehicle flow data from JSON file"""
+    def load_flow_data(self):
+        """Load vehicle flow data from JSON file  edit the address"""
         try:
-            with open(flow_file) as f:
+            with open("C:\\Users\\asdal\\Downloads\\CityFlow-generated-001\\examples\\9-9\\flow_9_9_turn.json", "r", encoding="utf-8") as f:
                 self.flows = json.load(f)
-            print(f"✅ Loaded flow data from {flow_file}")
+            print(f"✅ Loaded flow data from ")
         except FileNotFoundError:
-            print(f"❌ Error: File {flow_file} not found.")
+            print(f"❌ Error: File  not found.")
             print("   Using sample data instead.")
-            self.create_sample_data()
+            #self.create_sample_data()
         except json.JSONDecodeError:
-            print(f"❌ Error: Invalid JSON format in {flow_file}")
+            print(f"❌ Error: Invalid JSON format in ")
             print("   Using sample data instead.")
-            self.create_sample_data()
+           # self.create_sample_data()
+
+
     
     def create_sample_data(self):
         """Create sample flow data for testing"""
@@ -1020,7 +1022,7 @@ Examples:
         """
     )
     
-    parser.add_argument("--flow", type=str, default="C:\\Users\\asdal\\Downloads\\CityFlow-generated-001\\examples\\9-9\\flow_9_9_turn.json",
+    parser.add_argument("--flow", type=str,
                        help="Path to flow JSON file (optional, uses sample data if not provided)")
     parser.add_argument("--steps", type=int, default=300,
                        help="Number of simulation steps (default: 300)")
