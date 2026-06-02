@@ -9,12 +9,15 @@ import sys
 from datetime import datetime
 import math 
 
+# -------------------------
+# Global Configuration
+# -------------------------
+# Kept this global definition to unify the configuration used across the class
 INTERSECTIONS = {
     0: ["road_0", "road_1"],
     1: ["road_2", "road_3"],
     2: ["road_4", "road_5"]
 }
-
 
 # -------------------------
 # Car-Following Models
@@ -42,8 +45,6 @@ def IDM_acceleration(vehicle, gap, leader_speed, min_gap=2.0, desired_headway=1.
         acceleration = -b  # Emergency braking
     
     return max(min(acceleration, a), -b)
-
-import numpy as np
 
 def Gipps_acceleration(vehicle, gap, leader_speed, leader_deceleration=3.0, reaction_time=1.0):
     """
@@ -78,8 +79,6 @@ def Gipps_acceleration(vehicle, gap, leader_speed, leader_deceleration=3.0, reac
     acceleration = min(term1, term2 - v)
 
     return acceleration
-
-
 
 def safe_acceleration(vehicle, leader, gap):
     """Safe car-following model (simplified)"""
@@ -129,7 +128,7 @@ class TrafficSignal:
     def update(self, dt):
         """Update signal timing"""
         self.current_time += dt
-        self.phase_history.append(self.current_phase)
+        self.phase_history.append(self.current_time)
 
     # ===============================
     # 🔥 RL ACTION INTERFACE (REQUIRED)
@@ -156,8 +155,6 @@ class TrafficSignal:
             "min_green": self.min_green
         }
 
-
-
 class RLTrafficSignal(TrafficSignal):
     """
     RL-controlled traffic signal
@@ -183,7 +180,6 @@ class RLTrafficSignal(TrafficSignal):
             return "green" if road_id % 2 == 0 else "red"
         else:
             return "green" if road_id % 2 == 1 else "red"
-
 
 # -------------------------
 # Road Network Class
@@ -351,11 +347,6 @@ class TRAFI_Stats:
 # -------------------------
 # Main Simulation Class
 # -------------------------
-INTERSECTIONS = {
-    "int_1": ["road_1", "road_2"],
-    "int_2": ["road_3", "road_4"]
-}
-
 class TRAFI_Simulator:
 
     def __init__(self, flow_file=None, dt=1.0, total_steps=300, road_length=100, 
@@ -396,33 +387,28 @@ class TRAFI_Simulator:
         print(f"   • Car-following model: {car_following_model}")
         print(f"   • Traffic signals: {'Enabled' if enable_signals else 'Disabled'}")
 
-    # Helper to find intersection for a road
-    def get_intersection_id(road):
-        """
-        Returns the intersection ID for a given road
-        """
-        # Example implementation
-        for iid, roads in INTERSECTIONS.items():
-            if road in roads:
-                return iid
-        return None  # if road not found
+    # DELETED: Duplicate helper method missing 'self' (Previously around Line 319)
+
+    # Vehicle update method (MULTI-INTERSECTION READY)
+    def update_vehicle_state(self, vehicle, step):
+        """Update state of a single vehicle (MULTI-INTERSECTION READY)"""
 
         # -----------------------------
-    
-    # Vehicle update method (MULTI-INTERSECTION READY)
-    # -----------------------------
-    def update_vehicle_state(self, vehicle, step):
+        # Vehicle start logic
+        # -----------------------------
         if vehicle["state"] == "waiting":
             if step >= vehicle["start_time"]:
                 vehicle["state"] = "running"
                 vehicle["speed"] = 0.1
             else:
                 return
-        
+
         if vehicle["state"] != "running":
             return
 
-        # Get road ID
+        # -----------------------------
+        # Road ID (for signal phase)
+        # -----------------------------
         road_id = 0
         if vehicle["current_road"] and "_" in vehicle["current_road"]:
             try:
@@ -434,37 +420,53 @@ class TRAFI_Simulator:
         # MULTI-INTERSECTION SIGNAL CHECK
         # -----------------------------
         signal_phase = "green"
+
         if self.enable_signals:
             iid = self.get_intersection_id(vehicle["current_road"])
-            if iid and iid in self.traffic_signals:
+            if iid is not None:
                 signal = self.traffic_signals[iid]
                 signal_phase = signal.get_phase(road_id)
 
-        # SIGNAL-AWARE DRIVING
+        # -----------------------------
+        # SIGNAL AWARE DRIVING
+        # -----------------------------
         if signal_phase == "red" and vehicle["position"] > self.road_length - 30:
+
             vehicle["waiting_time"] += self.dt
             gap_to_stop = self.road_length - vehicle["position"]
+
             if gap_to_stop > 0:
                 acceleration = IDM_acceleration(vehicle, gap_to_stop, 0)
                 vehicle["speed"] = max(0, vehicle["speed"] + acceleration * self.dt)
+
         else:
             leader, gap = self.find_leading_vehicle(vehicle)
             acceleration = self.calculate_acceleration(vehicle, leader, gap)
+
             vehicle["last_acceleration"] = acceleration
-            vehicle["speed"] = max(0, min(vehicle["speed"] + acceleration * self.dt, vehicle["max_speed"]))
+
+            new_speed = vehicle["speed"] + acceleration * self.dt
+            vehicle["speed"] = max(0, min(new_speed, vehicle["max_speed"]))
+
             if vehicle["speed"] > 0.1:
                 vehicle["waiting_time"] = max(0, vehicle["waiting_time"] - 0.5)
 
-        # Update position
+        # -----------------------------
+        # POSITION UPDATE
+        # -----------------------------
         delta = vehicle["speed"] * self.dt
         vehicle["position"] += delta
         vehicle["total_distance"] += delta
 
-        # Environmental impact
+        # -----------------------------
+        # ENVIRONMENTAL METRICS
+        # -----------------------------
         self.stats.calculate_fuel_consumption(vehicle, self.dt)
         self.stats.calculate_emissions(vehicle, self.dt)
 
-        # Record trajectory
+        # -----------------------------
+        # TRAJECTORY LOGGING
+        # -----------------------------
         vehicle["trajectory"].append({
             "time": step * self.dt,
             "road": vehicle["current_road"],
@@ -473,25 +475,33 @@ class TRAFI_Simulator:
             "acceleration": vehicle.get("last_acceleration", 0)
         })
 
-        # Road transition
+        # -----------------------------
+        # ROAD TRANSITION
+        # -----------------------------
         if vehicle["position"] >= self.road_length:
+
             self.road_network.remove_vehicle(vehicle["current_road"], vehicle["id"])
+
             if vehicle["road_idx"] < len(vehicle["route"]) - 1:
                 vehicle["road_idx"] += 1
                 vehicle["current_road"] = vehicle["route"][vehicle["road_idx"]]
                 vehicle["position"] = 0
                 self.road_network.add_vehicle(vehicle["current_road"], vehicle)
+
             else:
                 vehicle["state"] = "finished"
                 vehicle["completed_step"] = step
+
                 self.stats.record_trip(
                     vehicle,
                     vehicle["start_time"],
                     step * self.dt,
                     len(vehicle["route"]) * self.road_length
                 )
-                self.finished_vehicles.append(vehicle)  
 
+                self.finished_vehicles.append(vehicle)
+
+    # DELETED: Duplicate update_vehicle_state (Previously around Line 328)
 
     def load_flow_data(self, flow_file):
         """Load vehicle flow data from JSON file"""
@@ -608,117 +618,6 @@ class TRAFI_Simulator:
         vehicle["last_acceleration"] = acceleration
         return acceleration
     
-    def update_vehicle_state(self, vehicle, step):
-        """Update state of a single vehicle (MULTI-INTERSECTION READY)"""
-
-        # -----------------------------
-        # Vehicle start logic
-        # -----------------------------
-        if vehicle["state"] == "waiting":
-            if step >= vehicle["start_time"]:
-                vehicle["state"] = "running"
-                vehicle["speed"] = 0.1
-            else:
-                return
-
-        if vehicle["state"] != "running":
-            return
-
-        # -----------------------------
-        # Road ID (for signal phase)
-        # -----------------------------
-        road_id = 0
-        if vehicle["current_road"] and "_" in vehicle["current_road"]:
-            try:
-                road_id = int(vehicle["current_road"].split("_")[-1])
-            except:
-                pass
-
-        # -----------------------------
-        # MULTI-INTERSECTION SIGNAL CHECK
-        # -----------------------------
-        signal_phase = "green"
-
-        if self.enable_signals:
-            iid = self.get_intersection_id(vehicle["current_road"])
-            if iid is not None:
-                signal = self.traffic_signals[iid]
-                signal_phase = signal.get_phase(road_id)
-
-        # -----------------------------
-        # SIGNAL AWARE DRIVING
-        # -----------------------------
-        if signal_phase == "red" and vehicle["position"] > self.road_length - 30:
-
-            vehicle["waiting_time"] += self.dt
-            gap_to_stop = self.road_length - vehicle["position"]
-
-            if gap_to_stop > 0:
-                acceleration = IDM_acceleration(vehicle, gap_to_stop, 0)
-                vehicle["speed"] = max(0, vehicle["speed"] + acceleration * self.dt)
-
-        else:
-            leader, gap = self.find_leading_vehicle(vehicle)
-            acceleration = self.calculate_acceleration(vehicle, leader, gap)
-
-            vehicle["last_acceleration"] = acceleration
-
-            new_speed = vehicle["speed"] + acceleration * self.dt
-            vehicle["speed"] = max(0, min(new_speed, vehicle["max_speed"]))
-
-            if vehicle["speed"] > 0.1:
-                vehicle["waiting_time"] = max(0, vehicle["waiting_time"] - 0.5)
-
-        # -----------------------------
-        # POSITION UPDATE
-        # -----------------------------
-        delta = vehicle["speed"] * self.dt
-        vehicle["position"] += delta
-        vehicle["total_distance"] += delta
-
-        # -----------------------------
-        # ENVIRONMENTAL METRICS
-        # -----------------------------
-        self.stats.calculate_fuel_consumption(vehicle, self.dt)
-        self.stats.calculate_emissions(vehicle, self.dt)
-
-        # -----------------------------
-        # TRAJECTORY LOGGING
-        # -----------------------------
-        vehicle["trajectory"].append({
-            "time": step * self.dt,
-            "road": vehicle["current_road"],
-            "position": vehicle["position"],
-            "speed": vehicle["speed"],
-            "acceleration": vehicle.get("last_acceleration", 0)
-        })
-
-        # -----------------------------
-        # ROAD TRANSITION
-        # -----------------------------
-        if vehicle["position"] >= self.road_length:
-
-            self.road_network.remove_vehicle(vehicle["current_road"], vehicle["id"])
-
-            if vehicle["road_idx"] < len(vehicle["route"]) - 1:
-                vehicle["road_idx"] += 1
-                vehicle["current_road"] = vehicle["route"][vehicle["road_idx"]]
-                vehicle["position"] = 0
-                self.road_network.add_vehicle(vehicle["current_road"], vehicle)
-
-            else:
-                vehicle["state"] = "finished"
-                vehicle["completed_step"] = step
-
-                self.stats.record_trip(
-                    vehicle,
-                    vehicle["start_time"],
-                    step * self.dt,
-                    len(vehicle["route"]) * self.road_length
-                )
-
-                self.finished_vehicles.append(vehicle)
-
     def run_simulation_step(self, step):
         """
         Run a single simulation step:
@@ -986,6 +885,7 @@ class TRAFI_Simulator:
         queue = self.stats.time_series_data["queue_length"][-1] if self.stats.time_series_data["queue_length"] else 0
         density = self.stats.time_series_data["density"][-1] if self.stats.time_series_data["density"] else 0
         return np.array([avg_speed, queue, density], dtype=np.float32)
+
     # ----------------------------- 
     # RL multi-intersection step
     # -----------------------------
@@ -1029,6 +929,7 @@ class TRAFI_Simulator:
 
             # (Optional: store reward for learning later)
 
+    # DELETED: Duplicate rl_step (Previously around Line 791)
 
     def get_rl_reward(self):
         avg_speed = self.stats.time_series_data["speed"][-1] if self.stats.time_series_data["speed"] else 0
@@ -1045,25 +946,11 @@ class TRAFI_Simulator:
 
         return reward
 
-    def rl_step(self, step):
-        state = self.get_rl_state()
-
-        # Temporary random policy (replace with PPO/DQN)
-        action = np.random.choice([0, 1])
-
-        self.traffic_signal.apply_action(action, step * self.dt)
-
-        reward = self.get_rl_reward()
-
-        return state, action, reward
-
     def get_intersection_id(self, road_name):
         for iid, roads in INTERSECTIONS.items():
             if road_name in roads:
                 return iid
         return None
-
-
 
 # -------------------------
 # Command Line Interface
@@ -1082,7 +969,7 @@ Examples:
         """
     )
     
-    parser.add_argument("--flow", type=str, default="flow_9_9_turn.json",
+    parser.add_argument("--flow", type=str, default="C:\\Users\\asdal\\Downloads\\CityFlow-generated-001\\examples\\9-9\\flow_9_9_turn.json",
                        help="Path to flow JSON file (optional, uses sample data if not provided)")
     parser.add_argument("--steps", type=int, default=300,
                        help="Number of simulation steps (default: 300)")
@@ -1092,7 +979,7 @@ Examples:
                        help="Length of each road segment in meters (default: 100)")
     parser.add_argument("--model", type=str, default="IDM",
                        choices=["IDM", "GIPPS", "SAFE"],
-                       help="Car-following model to use (default: IDM)")
+                       help="Car-following model to use (default: IDM). Ref: IDM (Line 22), GIPPS (Line 48), SAFE (Line 84)")
     parser.add_argument("--no-signals", action="store_true",
                        help="Disable traffic signals")
     parser.add_argument("--visualize", action="store_true",
@@ -1151,5 +1038,3 @@ Examples:
 if __name__ == "__main__":
     main()
 
-
-    
